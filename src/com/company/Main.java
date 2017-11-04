@@ -11,13 +11,13 @@ import java.util.Scanner;
  *
  */
 public class Main {
-    ListProperties propertyList = new ListProperties();
-    ListRooms roomList = new ListRooms();
-    ListBeds bedList = new ListBeds();
+    private ListProperties propertyList = new ListProperties();
+    private ListRooms roomList = new ListRooms();
+    private ListBeds bedList = new ListBeds();
 
     Scanner scan = new Scanner(System.in);
-    LinkedList<Property> prop = propertyList.propertyList;
-    Property property;
+    private LinkedList<Property> prop = propertyList.propertyList;
+    private Property property;
     private int bedID = 0;
 
 
@@ -284,18 +284,18 @@ public class Main {
         System.out.print("Please enter the Property Type: ");
         String propertyType = scan.nextLine();
         System.out.print("Please enter number of floors in the building: ");
-        int floors = scan.nextInt();
+        int floors = scanInt();
         System.out.print("Please enter distance to WIT: ");
-        int dist = scan.nextInt();
+        int dist = scanInt();
         System.out.print("Please enter number of car parking spaces: ");
-        int spaces = scan.nextInt();
+        int spaces = scanInt();
         propertyList.addProperty(address, propertyType, floors, dist, spaces);
 
     }
     private void propertyRemove(){
         propertyList.removeProperty(this.findProperty());
     }
-    public String findProperty(){
+    private String findProperty(){
         System.out.println(" What is the address of the property?");
         return scan.nextLine();
     }
@@ -306,7 +306,7 @@ public class Main {
 
   private void addRoom(){
       System.out.print("Please enter the address: ");
-      String address = scan.nextLine();
+      String address;
       address = scan.nextLine();
       addRoom(address);
   }
@@ -366,7 +366,7 @@ public class Main {
     private void addBed(String address) {
         System.out.println(" In which Room would you like to add a Bed?");
         Property currentProperty = propertyList.findPropertyByAddress(address);
-        currentProperty.listRooms.listRooms();
+        currentProperty.listRooms.listRooms(); // error I think this is empty
         int roomChoice = scanInt();
         Room currentRoom = currentProperty.listRooms.getRoomWithNumber(roomChoice);
         if (currentRoom != null){

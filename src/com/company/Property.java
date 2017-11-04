@@ -16,14 +16,11 @@ public class Property {
 
     ListRooms listRooms = new ListRooms();
 
-    public Property(){
-
-    }
 
     // This is the Constructor for the Property Class.
     public Property(String address,String propertyType, int floors, int dist, int parkingSpaces) {
-        this.propertyType = propertyType;
         this.address = sanitizeAddress(address);
+        this.propertyType = propertyType;
         this.floors = floors;
         this.dist = dist;
         this.parkingSpaces = parkingSpaces;
@@ -60,7 +57,7 @@ public class Property {
     }
 
     //Setters
-    public void setPropertyType(String type) {
+    public void setPropertyType(String propertyType) {
         this.propertyType = propertyType;
     }
 
@@ -76,7 +73,7 @@ public class Property {
         this.dist = dist;
     }
 
-    public void setParkingSpace(int parkingSpace) {
+    public void setParkingSpace(int parkingSpaces) {
         this.parkingSpaces = parkingSpaces;
     }
 
