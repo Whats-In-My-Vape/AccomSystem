@@ -3,7 +3,7 @@ package com.company;
 /**
  * Student Class
  *
- * @author Kevin Power
+ * @author User1
  *
  */
 

@@ -2,6 +2,9 @@ package com.company;
 
 import java.util.Iterator;
 
+/**
+ * @author User1
+ */
 public class ListBeds implements Iterable<Bed>
 {
 

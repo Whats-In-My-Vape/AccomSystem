@@ -3,7 +3,7 @@ package com.company;
 /**
  * Bed Class
  *
- * @author Kevin Power
+ * @author User1
  *
  */
 

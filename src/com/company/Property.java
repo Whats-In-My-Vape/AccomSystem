@@ -3,7 +3,7 @@ package com.company;
 /**
  * Property Class
  *
- * @author Kevin Power
+ * @author User1
  *
  */
 public class Property {

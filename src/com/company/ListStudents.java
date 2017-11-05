@@ -2,6 +2,11 @@ package com.company;
 
 import java.util.Iterator;
 
+/**
+ * LinkedList Class
+ *
+ * @author User1
+ */
 
 public class ListStudents implements Iterable<Student> {
     private LinkedList<Student> studentlist = new LinkedList<>();
@@ -18,7 +23,24 @@ public class ListStudents implements Iterable<Student> {
 
 
     }
-    
+    public Student getStudentWithID(int studentId){
+        for(Student student : this){
+            if(student.getStudentId() == studentId){
+                return student;
+            }
+        }
+        System.out.println("Student Id" + studentId + " does not exist.");
+        return null;
+    }
+    public void removeStudent(int student){
+        // checks if bed exists
+        Student revoke = getStudentWithID(student);
+        // if it exists, ...removed.
+        if (revoke != null){
+            studentlist.remove(revoke);
+            System.out.println(revoke + " has been removed");
+        }
+    }
 
     public void listStudents() {
         int studentId = 0;

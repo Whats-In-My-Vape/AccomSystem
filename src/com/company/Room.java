@@ -3,7 +3,7 @@ package com.company;
 /**
  * Room Class
  *
- * @author Kevin Power
+ * @author User1
  *
  */
 public class Room {

@@ -1,6 +1,8 @@
 package com.company;
 
 /**
+ * ListProperties Class
+ *
  * Created by User1 on 01/11/2017.
  */
 import java.util.Iterator;

@@ -7,15 +7,16 @@ import java.util.Scanner;
 /**
  * Main Class
  *
- * @author Kevin Power
+ * @author User1
  *
  */
 public class Main {
     private ListProperties propertyList = new ListProperties();
     private ListRooms roomList = new ListRooms();
     private ListBeds bedList = new ListBeds();
+    private ListStudents studentList = new ListStudents();
 
-    Scanner scan = new Scanner(System.in);
+    private Scanner scan = new Scanner(System.in);
     private LinkedList<Property> prop = propertyList.propertyList;
     private Property property;
     private int bedID = 0;
@@ -29,7 +30,7 @@ public class Main {
     private String printStartMenu()
     {
         System.out.println("_________________");
-        System.out.println("§   Property(p  §");
+        System.out.println("§   Property(p) §");
         System.out.println("§   Student(s)  §");
         System.out.println("§   Room(r)     §");
         System.out.println("§   Bed(b)      §");
@@ -43,7 +44,8 @@ public class Main {
         return option;
     }
 
-    public Main(){
+    private Main(){
+        //sample property's
         propertyList.addProperty("address 1","flat",4,1,9);
         propertyList.addProperty("address 2","house",1,2,60);
         propertyList.addProperty("address 3","tent",1,600,40);
@@ -53,17 +55,27 @@ public class Main {
         propertyList.addProperty("address 7","underpass",8,10,80);
         propertyList.addProperty("address 8","jungle",2,7,12);
 
+        //sample rooms
         roomList.addRoom("single", 2,true);
         roomList.addRoom("double", 4,true);
         roomList.addRoom("single", 2,false);
         roomList.addRoom("double", 7,false);
         roomList.addRoom("single", 3,true);
 
+        //sample beds
         bedList.addBed("single", 23, 1);
         bedList.addBed("single", 20, 2);
         bedList.addBed("double", 45, 3);
         bedList.addBed("bunk", 30, 4);
         bedList.addBed("single", 20, 5);
+
+        //sample students
+        studentList.addStudent("joe" , "MALE", true ,1);
+        studentList.addStudent("mary" , "FEMALE", true ,2);
+        studentList.addStudent("bob" , "MALE", false ,3);
+        studentList.addStudent("will" , "MALE", true ,4);
+        studentList.addStudent("conor" , "MALE", false ,5);
+        studentList.addStudent("joe" , "MALE", true ,6);
 
 
         startMenu();
@@ -162,7 +174,7 @@ public class Main {
 
     private String room()
     {
-        System.out.println("Property Search Menu");
+        System.out.println("Room Search Menu");
         System.out.println("What are you searching for?");
         System.out.println("______________________");
         System.out.println("§  Show all(s)       §");
@@ -204,7 +216,7 @@ public class Main {
     }
     private String bed()
     {
-        System.out.println("Property Search Menu");
+        System.out.println("Bed Search Menu");
         System.out.println("What are you searching for?");
         System.out.println("______________________");
         System.out.println("§  Show all(s)       §");
@@ -244,10 +256,73 @@ public class Main {
         }
 
     }
-    private void studentMenu(){
+
+    private String student()
+    {
+        System.out.println("Student Search Menu");
+        System.out.println("What are you searching for?");
+        System.out.println("______________________");
+        System.out.println("§  Show all(s)       §");
+        System.out.println("§  Add (a)           §");
+        System.out.println("§  Remove (r)        §");
+        System.out.println("§  Back out(o)       §");
+        System.out.println("______________________");
+        System.out.println("   ----------------   ");
+        System.out.println("   e) Exit");
+        System.out.print("==>> ");
+        String option = scan.next();
+        option = option.toLowerCase();
+        return option;
+    }
+    private void studentMenu() {
+        String option = student();
+        while (!option.equals("e")) {
+            switch (option) {
+                case "s":
+                    showAllStudents();
+                    break;
+                case "a":
+                    addStudent();
+                    break;
+                case "r":
+                    removeStudent();
+                    break;
+                case "o":
+                    backOut();
+                    break;
+            }
+            System.out.println("\nPress Return to continue...");
+            scan.nextLine();
+            scan.nextLine();
+
+            option = room();
+        }
 
     }
+    // list students
+    private void showAllStudents(){
+            studentList.listStudents();
+    }
 
+    private void addStudent(){
+        System.out.println("Please enter the Property Type: ");
+        String studentName = scan.nextLine();
+        System.out.println("Please enter number of floors in the building: ");
+        String studentGender = scan.nextLine();
+        System.out.println("Please enter distance to WIT: ");
+        boolean car = scan.nextBoolean();
+        System.out.println("Please enter number of car parking spaces: ");
+        int studentId = scanInt();
+        studentList.addStudent(studentName, studentGender, car, studentId);
+    }
+
+    private void removeStudent(){
+        studentList.removeStudent(this.findStudentId());
+    }
+    private int findStudentId(){
+        System.out.println(" What is the address of the property?");
+        return scanInt();
+    }
 
     private void backOut(){
         startMenu();
@@ -257,17 +332,18 @@ public class Main {
     private void showAll(){
         propertyList.listProperties();
     }
+
     private void distance(){
         System.out.println("Enter a distance ");
         int i = scan.nextInt();
         try {
             int j = 0;
 
-                while (property.getDist() >= i && prop.getSize()> j) {
+                while (property.getDist() >= i && prop.size()> j) {
                     System.out.println("Properties within this distance" + property.getDist());
                 }
                 System.out.println(property.getDist() + " , " + property.getParkingSpace() + " , " + property.getAddress());
-                j++;
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -278,16 +354,17 @@ public class Main {
     private void parkingSpaces(){
             propertyList.listParkingSpaces();
     }
+
     private void propertyAdd(){
-        System.out.print("Please enter the address: ");
+        System.out.println("Please enter the address: ");
         String address = scan.nextLine();
-        System.out.print("Please enter the Property Type: ");
+        System.out.println("Please enter the Property Type: ");
         String propertyType = scan.nextLine();
-        System.out.print("Please enter number of floors in the building: ");
+        System.out.println("Please enter number of floors in the building: ");
         int floors = scanInt();
-        System.out.print("Please enter distance to WIT: ");
+        System.out.println("Please enter distance to WIT: ");
         int dist = scanInt();
-        System.out.print("Please enter number of car parking spaces: ");
+        System.out.println("Please enter number of car parking spaces: ");
         int spaces = scanInt();
         propertyList.addProperty(address, propertyType, floors, dist, spaces);
 
@@ -295,6 +372,7 @@ public class Main {
     private void propertyRemove(){
         propertyList.removeProperty(this.findProperty());
     }
+
     private String findProperty(){
         System.out.println(" What is the address of the property?");
         return scan.nextLine();
@@ -310,6 +388,7 @@ public class Main {
       address = scan.nextLine();
       addRoom(address);
   }
+
     private void addRoom(String address){
         String roomType;
         int floorLevel;
@@ -363,6 +442,7 @@ public class Main {
             } else System.out.println("Sorry, no Rooms have been assigned to this property yet.");
         }
     }
+
     private void addBed(String address) {
         System.out.println(" In which Room would you like to add a Bed?");
         Property currentProperty = propertyList.findPropertyByAddress(address);
@@ -421,6 +501,7 @@ public class Main {
             }
         }
     }
+
     private int bedCost(){
         System.out.println(" What is the cost to book this bed?");
             return scanInt();
@@ -430,10 +511,12 @@ public class Main {
         System.out.println(" What is the cost to book each bunk?");
             return scanInt();
     }
+
     private int bedID(){
         bedID += 1;
         return  bedID;
     }
+
     private void removeBed(){
         // finds the property where the bed you want to remove is
         Property property = propertyList.findPropertyByAddress(findProperty());
@@ -462,6 +545,7 @@ public class Main {
     }
         return option;
 }
+
     private void exitApp(){
         System.out.println("Exiting App");
         System.exit(0);
