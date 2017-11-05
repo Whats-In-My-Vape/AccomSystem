@@ -11,7 +11,7 @@ public class ListBeds implements Iterable<Bed>
 
     @Override
     public Iterator<Bed> iterator() {
-        return bedList.iterator();
+        return bedList.showList();
     }
 
     public void addBed(String bedSize, int cost, int bedID){

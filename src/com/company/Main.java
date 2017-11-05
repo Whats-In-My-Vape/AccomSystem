@@ -263,7 +263,7 @@ public class Main {
         try {
             int j = 0;
 
-                while (property.getDist() >= i && prop.size()> j) {
+                while (property.getDist() >= i && prop.getSize()> j) {
                     System.out.println("Properties within this distance" + property.getDist());
                 }
                 System.out.println(property.getDist() + " , " + property.getParkingSpace() + " , " + property.getAddress());

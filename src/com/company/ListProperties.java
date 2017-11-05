@@ -14,7 +14,7 @@ public class ListProperties implements Iterable<Property>{
         return propertyList.iterator();
     }
 
-   //add a propery to the list
+   //add a property to the list
     public void addProperty(String address, String propertyType, int floors, int dist, int parkingSpaces) {
         Property newProperty = new Property(address, propertyType, floors, dist, parkingSpaces);
         propertyList.add(newProperty);

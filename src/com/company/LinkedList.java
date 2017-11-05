@@ -4,333 +4,210 @@ package com.company;
  * Created by User1 on 18/10/2017.
  */
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
-public class LinkedList<E> implements Iterable<E>
-{
-    private DataLink<E> header = null;
-    private int size = 0;                                       //are these not the same?
-                                                                //
-    public LinkedList()                                         //
-    {                                                           //
-        //create the head with a null data                      //
-        header = new DataLink<E>(null);
-        size = 0; //the header doesn't count
+public class LinkedList<T> implements Iterable<T>{
+    private GenericNode<T> Head;
+    private GenericNode<T> LinkNode; //CurrentNode
+    private GenericNode<T> nextNode;
+    private GenericNode<T> temp;
+    private int size;
+    GenericNode<T> previous;
+    GenericNode<T> Current;
+
+    public GenericNode<T> getHead() {
+        return Head;
+    }
+    public void setHead(GenericNode<T> head) {
+        Head = head;
+    }
+    public GenericNode<T> getLinkNode() {
+        return LinkNode;
+    }
+    public void setLinkNode(GenericNode<T> linkNode) {
+        LinkNode = linkNode;
+    }
+    public GenericNode<T> getNextNode() {
+        return nextNode;
+    }
+    public void setNextNode(GenericNode<T> nextNode) {
+        this.nextNode = nextNode;
+    }
+    public int getSize() {
+        return size;
+    }
+    public void setSize(int size) {
+        this.size = size;
     }
 
-    /**
-     * Add a data to the end of the list
-     */
-    public void add(E data)
-    {
-        DataLink<E> prevLink = null;
-        //create a new link and append it to the end of the chain
-        if (size == 0)
-        {
-            prevLink = header;
+    public boolean listIsEmpty(){
+        if (Head==null){
+            return true;
         }
-        else
-        {
-            //find the last link
-            prevLink = findLink(size-1);
-        }
-        DataLink<E> newLink = new DataLink<E>(data, prevLink);
-        //increment the size
+        return false;
+    }
+
+    public void InsertFirst(T value){
+        LinkNode=new GenericNode<T>(value);
+        size++;
+        Head=LinkNode;
+    }
+
+    public void addFirst(T value){
+        temp = new GenericNode<T>(value);
+        temp.setGenericNode(Head);
+        this.Head = temp;
+        this.size++;
+        LinkNode = temp;
+    }
+
+    public void addLast(T value){
+        temp =  new GenericNode<T>(value);
+        LinkNode.setNode(temp);
+        LinkNode=temp;
         size++;
     }
 
-//    public void add(E data)
-//    {
-//        DataLink<E> newDataLink = new DataLink<>(data);
-//        if(size == 0)
-//        {
-//            header = newDataLink;
-//        }
-//        else
-//        {
-//            findLink(size-1).nextDataLink = newDataLink;
-//        }
-//        size++;
-//    }
-
-    public void addAtIndex(int index, E data)
-    {
-        //can actually add at size since it would be the
-        //tail DataLink
-        if (index < 0 || index > size)
-        {
-            throw new IndexOutOfBoundsException();
+    public void add(T value){
+        if (listIsEmpty()==true){
+            InsertFirst(value);
         }
-
-        DataLink<E> prevLink = null;
-        //create a new link and append it to the end of the chain
-        if (size == 0)
-        {
-            prevLink = header;
+        else{
+            addLast(value);
         }
-        else
-        {
-            //find the link at index and it's next link
-            //to insert in the middle
-            prevLink = findLink(index - 1);
-        }
-        DataLink<E> newLink = new DataLink<E>(data, prevLink);
-
-        //increment the size
-        size++;
     }
 
-    /**
-     * Remove data from the chain
-     */
-    public void remove(E data)
-    {
-        DataLink<E> theLink = header.nextDataLink;
-        DataLink<E> prevLink = header;
-
-        if (theLink.data.equals(data))
-        {
-            //remove the first link
-            header.nextDataLink = theLink.nextDataLink;
-            theLink = null;
-            size--;
-        }
-        else
-        {
-            boolean modified = false;
-            for (int i = 1; (i <= size && !modified); i++)
-            {
-                //move to the link to get
-                prevLink = theLink;
-                theLink = theLink.nextDataLink;
-                if (theLink.data.equals(data))
-                {
-                    prevLink.nextDataLink = theLink.nextDataLink;
-                    theLink = null;
-                    size--;
-                    modified = true;
+    public void add(int index,T value){
+        Current =Head;
+        for(int i=1;i<=getSize();i++){
+            if(index==i){
+                if(index==1){
+                    addFirst(value);
                 }
+                else
+                    temp=new GenericNode(value);
+                nextNode= Current;
+                temp.setNode(nextNode);
+                if(previous!=null){
+                    previous.setNode(temp);
+                }
+                size++;
             }
-        }
-        return;
-    }
-
-    /**
-     * Remove link from chain by index
-     */
-    public void remove(int index)
-    {
-        CheckValidIndex(index);
-        DataLink<E> prevLink = header;
-        boolean modified = false;
-        for (int i = 0; (i < size && !modified); i++)
-        {
-            DataLink<E> nextLink = prevLink.nextDataLink;
-            if (i == index)
-            {
-                //this is the link to remove
-                prevLink.nextDataLink = nextLink.nextDataLink;
-                nextLink = null;
-                size--;
-                modified = true;
+            previous=Current;
+            if(Current.getNode()!=null){
+                Current=Current.getNode();
             }
-            prevLink = nextLink;
         }
     }
 
-    /**
-     * Get the data from the list at index
-     */
-    public E get(int index)
-    {
-        //make sure the index is valid
-        CheckValidIndex(index);
-        DataLink<E> theLink = findLink(index);
-        if (theLink != null)
-        {
-            return theLink.data;
+    public T getFirst(){
+        return Head.getValue();
+    }
+
+    public  T getLast(){
+        Current=Head;
+        for(int i=1;i<=getSize();i++){
+            if(i==getSize()){
+                return Current.getValue();
+            }
+            Current=Current.getNode();
         }
         return null;
     }
 
-    /**
-     * Find the index of the first matching link
-     */
-    public int findIndex(E data)
-    {
-        if (size == 0) return -1;
-        DataLink<E> theLink = header.nextDataLink;
-        if (theLink.data.equals(data)) return 0;
-        for (int i = 1; i < size; i++)
-        {
-            theLink = theLink.nextDataLink;
-            //determine if the next link is the one to remove
-            if (theLink.data.equals(data))
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
+    public void removeWithIndex(int index){
 
-    /**
-     * Get the size
-     */
-    public int size()
-    {
-        return size;
-    }
-
-    /**
-     * Get a link from the chain by index.
-     */
-    protected DataLink<E> findLink(int index)
-    {
-        CheckValidIndex(index);
-        if (size <= 0) return null;
-
-        DataLink<E> theLink = header;
-        if (index == 0)
-        {
-            return theLink;
-        }
-        else
-        {
-            for (int i = 1; i <= index; i++)
-            {
-                //move to the link to get
-                theLink = theLink.nextDataLink;
-            }
-            //we are now at the link
-            return theLink;
-        }
-    }
-
-    /**
-     * Make sure an index is valid
-     */
-    private void CheckValidIndex(int index)
-    {
-        if (index < 0 || index >= size)
-        {
-            throw new IndexOutOfBoundsException(
-                    Integer.toString(index));
-        }
-    }
-//    private boolean CheckValidIndex(int index)
-//    {
-//        if (index == 0 || index >= size){ // valid not a symbol
-//            return false;}
-//        else{ return true;
-//        }
-//    }
-
-    /**
-     * DataLink Stores data and links to the next DataLink.
-     */
-    private class DataLink<E>
-    {
-        private E data;				  		//the data
-        private DataLink<E> nextDataLink;   //the next link in the chain
-
-        /**
-         * Create a single data link.
-         */
-        public DataLink(E theData)
-        {
-            data = theData;
-            nextDataLink = null;
-        }
-
-        /**
-         * Create a new link and point to a next link.
-         */
-        public DataLink(E theData, DataLink<E> previousLink)
-        {
-            data = theData;
-            nextDataLink = previousLink.nextDataLink;
-            previousLink.nextDataLink = this;
-        }
-    }
-
-
-    @Override
-    public Iterator iterator() {
-        return new LinkedListIterator();
-    }
-
-    public Iterator iterator(int index)
-    {
-        return new LinkedListIterator(index);
-    }
-
-
-
-    private class LinkedListIterator<E> implements Iterator
-    {
-        private DataLink<E> currentLink;
-        private DataLink<E> previousLink;
-        private int currentIndex;
-        private int prevIndex;
-        private final int BAD_INDEX = -1;
-
-        public LinkedListIterator()
-        {
-            this(0);
-        }
-
-        public LinkedListIterator(int index)
-        {
-            CheckValidIndex(index);
-            currentLink = (DataLink<E>)LinkedList.this.header.nextDataLink;
-            //set the current Index and prevIndex and currentLink
-            if (index > 0)
-            {
-                //move to index
-                for (int i = 1; i <= index; i++)
-                {
-                    currentLink = currentLink.nextDataLink;
+        Current =Head;
+        if(Head!=null){
+            for(int i=1;i<=getSize();i++){
+                if(index==i){
+                    previous.setNode(Current.getNode());
+                    Current=previous;
+                    size--;
+                }
+                previous=Current;
+                if(Current.getNode()!=null){
+                    Current=Current.getNode();
                 }
             }
-            currentIndex = index;
-            prevIndex = BAD_INDEX;
         }
+    }
 
-        @Override
-        public boolean hasNext() {
-            return currentIndex < size;
-        }
+    public void deleteAll(){
+        Head=null;
+    }
 
-        @Override
-        public E next() {
-            if (!hasNext())
-            {
-                throw new NoSuchElementException();
-            }
-            this.prevIndex = currentIndex;
-            currentIndex++;
-            previousLink = currentLink;
-            currentLink = currentLink.nextDataLink;
-            return previousLink.data;
-        }
-
-        @Override
-        public void remove()
-        {
-            CheckValidState();
-            //need to remove the link we just passed over
-            LinkedList.this.remove(prevIndex);
-            previousLink = null;
-            currentIndex--;
-            prevIndex = BAD_INDEX;
-        }
-
-        private void CheckValidState()
-        {
-            if (prevIndex == BAD_INDEX)
-            {
-                throw new IllegalStateException("Must move next before calling remove");
+    public void removeLast(){
+        temp=Head;
+        for(int i=0;i<getSize();i++){
+            if(Head!=null){
+                if(temp.getNode()!=null){
+                    Current=temp.getNode();
+                    temp=temp.getNode();
+                }
+                else{
+                    if(Current!=null){
+                        Current.setNode(null);
+                        size--;
+                    }
+                    else{
+                        temp=null;
+                        size--;
+                    }
+                }
             }
         }
     }
+
+    public int getIndexOf(T value){
+        Current =Head;
+        int index=-1;
+        for(int i=1;i<=getSize();i++){
+            if(Current.getValue()==value){
+                index=i;
+            }
+            Current=Current.getNode();
+        }
+        return index;
+    }
+
+    public T getValueAt(int index){
+        try{
+            if(index>getSize()||index<=0){
+                throw new IndexOutOfBoundException("index out of bound");
+            }
+            Current =Head;
+            for(int i=1;i<=getSize();i++){
+                if(i==index){
+                    index=i;
+                    return Current.getValue();
+                }
+                Current=Current.getNode();
+            }
+        }
+        catch(IndexOutOfBoundException e){
+            e.getMessage();
+        }
+        return null;
+    }
+
+
+    public void showList(){
+        if(Head==null){
+            System.out.println("empty List");
+        }
+        else{
+            Current = Head;
+            for(int i=0;i<getSize();i++){
+                if(Current!=null){
+                    System.out.println("Data: "+ Current.getValue()+" ");
+                    Current = Current.getNode();  // i=i+1
+                }
+            }
+        }
+    }
+    @Override
+    public Iterator<T> iterator(){
+        return new GenericIterator<>(Head);
+    }
+
 }
